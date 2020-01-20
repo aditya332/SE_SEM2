@@ -51,7 +51,7 @@ public:
 				node *p = new node ;
 				cout<<"\nEnter destination city" ;
 				cin>>p->city ;
-				incoming(p->city) ;
+				incoming(p->city,1) ;
 				cout<<"\nEnter time taken :" ;
 				cin>>p->time ;
 				q->link = p ;
@@ -72,7 +72,7 @@ public:
 			node *p = new node ;
 			cout<<"\nEnter destination city" ;
 			cin>>p->city ;
-			incoming(p->city) ;
+			incoming(p->city,1) ;
 			cout<<"\nEnter time taken :" ;
 			cin>>p->time ;
 			q->link = p ;
@@ -96,7 +96,7 @@ public:
 		cin>>p->city ;
 		cout<<"\nEnter time taken for travel :" ;
 		cin>>p->time ;
-		incoming(p->city) ;
+		incoming(p->city,1) ;
 		for(int i = 0 ; i<n ; i++){
 			if(list[i]->city.compare(scity) == 0){
 				node *q = list[i] ;
@@ -120,16 +120,41 @@ public:
 			}
 		}
 	}
-	
-	int incoming(string find){
+
+	int incoming(string find , int x){
 		int i ;
 		for(i = 0 ; i<n ; i++){
-			if(list[i]->city.compare(find)) == 0){
-				list[i]->in++ ;
+			if(list[i]->city.compare(find) == 0){
+				if(x == 1)
+					list[i]->in++ ;
 				break ;
 			}
 		}
 		return i ;
+	}
+
+	void traversal(){
+		int visit[n] , next[n] ;
+		for(int i =0 ;i<n ; i++)
+			visit[i] = next[i] = 0 ;
+		string tname ;
+		cout<<"\nEnter city name to start traversal from :" ;
+		cin>>tname ;
+		cout<<"\nTraversal result is :" ;
+		cout<<"\n"<<tname ;
+		visit[incoming(tname,0)]++ ;
+		int counter = 0 ;
+		node *q = list[incoming(tname,0)] ;
+
+		for( int i = incoming(tname,0) ;i<n ; i++){
+			while(q != NULL){
+				int j = incoming(q->city,0) ;
+				visit[j]++ ;
+				if(visit[j] == 1)
+					cout<<"\n"<<q->city ;
+				q = q->link ;
+			}
+		}
 	}
 };
 
@@ -159,7 +184,7 @@ int main() {
 			g.cal() ;
 			break ;
 		case 5:
-
+			g.traversal() ;
 			break;
 		}
 	}while(ch != 6) ;
