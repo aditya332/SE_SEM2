@@ -77,21 +77,22 @@ void MainWindow::dda(){
       ui->label->show();
 }
 
-void MainWindow::dda(int x10,int y10,int x20,int y20){
-    float dx,dy,c;
-    dx = x20 - x10;
-    dy = y20 - y10;
-    float xi,yi;
-    if(abs(dx)>abs(dy))
-        c = abs(dx);
-    else
-        c = abs(dy);
-    xi = dx/c;
-    yi = dy/c;
-    for(int i = 0;i<c;i++){
-        image.setPixel(x10+xi,y10+yi,value);
-        x10 += xi;
-        y10 += yi;
+void MainWindow::dda(iint x1,int y1,int x2,int y2){
+    float dx,dy,steps,xinc,yinc;
+    dx=x2-x1;
+    dy=y2-y1;
+
+    steps=abs(dx)>abs(dy)?abs(dx):abs(dy);
+    xinc=dx/steps;
+    yinc=dy/steps;
+
+    float x=x1;
+    float y=y1;
+
+    for(int i=0;i<=steps;i++){
+        image.setPixel(x,y,value);
+        x=x+xinc;
+        y=y+yinc;
     }
     ui->label->setPixmap(QPixmap::fromImage(image));
     ui->label->show();
