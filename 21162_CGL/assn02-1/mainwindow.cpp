@@ -24,7 +24,6 @@ void MainWindow::input(){
 }
 
 void MainWindow::bresenham(){
-    input() ;
     int x = 0 , y = r1 ;
     int p = (3 - (2*r1)) ;
     display(200,200,x,y) ;
@@ -77,7 +76,7 @@ void MainWindow::dda(){
       ui->label->show();
 }
 
-void MainWindow::dda(iint x1,int y1,int x2,int y2){
+void MainWindow::dda(int x1,int y1,int x2,int y2){
     float dx,dy,steps,xinc,yinc;
     dx=x2-x1;
     dy=y2-y1;
@@ -100,7 +99,10 @@ void MainWindow::dda(iint x1,int y1,int x2,int y2){
 
 void MainWindow::on_pushButton_clicked()
 {
+    input() ;
     bresenham() ;
     dda() ;
-    dda(200,200-r1,200-(0.866*r1),(0.5*r1)+200) ;
+    dda(200,200-r1,200-(0.886*r1),(0.5*r1)+200) ;
+    dda(200,200-r1,200+(0.886*r1),(0.5*r1)+200) ;
+    dda(200-(0.886*r1),200+r1/2,200+(0.886*r1),200+r1/2) ;
 }
