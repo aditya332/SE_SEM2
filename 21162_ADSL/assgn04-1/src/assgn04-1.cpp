@@ -7,6 +7,7 @@
 //============================================================================
 
 #include <iostream>
+#include<string.h>
 using namespace std;
 
 class node{
@@ -70,7 +71,7 @@ public:
 		q->out = m ;
 		for(int j = 0 ; j < m ; j++){
 			node *p = new node ;
-			cout<<"\nEnter destination city" ;
+			cout<<"\nEnter destination city : " ;
 			cin>>p->city ;
 			incoming(p->city,1) ;
 			cout<<"\nEnter time taken :" ;
@@ -134,6 +135,32 @@ public:
 	}
 
 	void traversal(){
+		node *queue[n] ;
+		int queue_index = 0 , counter = 0 ;
+		int visit[n] ;
+		for(int i = 0 ;i<n ; i++){
+			queue[i] = new node ;
+			visit[i] = 0 ;
+			}
+		string tname ;
+		cout<<"\nEnter city name to start traversal from :" ;
+		cin>>tname ;
+		cout<<"\nTraversal result is :" ;
+		queue[queue_index] = list[incoming(tname,0)] ;
+		visit[incoming(tname,0)] = 1 ;
+		while(counter < n){
+			node* temp = queue[counter++] ;
+			cout<<temp->city ;
+			while(temp->link != NULL){
+				temp = temp->link ;
+				if(visit[incoming(temp->city , 0)] != 1 ){
+					queue[++queue_index] = temp ;
+					visit[incoming(temp->city , 0)] = 1 ;
+					}
+				}
+			}
+				
+	/*
 		int visit[n] , next[n] ;
 		for(int i =0 ;i<n ; i++)
 			visit[i] = next[i] = 0 ;
@@ -155,6 +182,38 @@ public:
 				q = q->link ;
 			}
 		}
+		*/
+	}
+	
+	void delete_vertice(){
+		string tname ;
+		cout<<"\nEnter city to be deleted : " ;
+		cin>>tname ;
+		int j = incoming(tname,0) ;
+		list[j]->link = NULL ;
+		for(int  i = j ;i<(n - j);i++){
+			list[i] = list[i+1] ;
+			}
+	}
+	
+	void delete_link(){
+		string tname , uname ;
+		cout<<"\nEnter name of starting city : " ;
+		cin>>tname ;
+		cout<<"\nEnter name of destination city : " ;
+		cin>>uname ;
+		node *temp = list[incoming(tname,0)] ;
+		node* r ;
+		list[incoming(tname,0)]->out-- ;
+		list[incoming(uname,0)]->in-- ;
+		while(temp->link != NULL){
+			r = temp ;
+			temp = temp->link ;
+			if(uname.compare(temp->city) == 0){
+				r->link = temp->link ;
+				temp->link = NULL ;
+				}
+			}	
 	}
 };
 
@@ -168,7 +227,9 @@ int main() {
 			<<"\n3 to add new link between two cities "
 			<<"\n4 to get total no. of incoming and outgoing flights from a city "
 			<<"\n5 for traversal of network "
-			<<"\n6 to exit ";
+			<<"\n6 to delete city from network "
+			<<"\n7 to delete a link between two cities "
+			<<"\n8 to exit ";
 		cin>>ch ;
 		switch(ch){
 		case 1:
@@ -186,7 +247,13 @@ int main() {
 		case 5:
 			g.traversal() ;
 			break;
+		case 6:
+			g.delete_vertice() ;
+			break ;
+		case 7:
+			g.delete_link() ;
+			break ;
 		}
-	}while(ch != 6) ;
+	}while(ch != 8) ;
 	return 0;
 }
