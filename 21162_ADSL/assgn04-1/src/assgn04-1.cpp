@@ -50,7 +50,7 @@ public:
 			q->out = m ;
 			for(int j = 0 ; j < m ; j++){
 				node *p = new node ;
-				cout<<"\nEnter destination city" ;
+				cout<<"\nEnter destination city :" ;
 				cin>>p->city ;
 				incoming(p->city,1) ;
 				cout<<"\nEnter time taken :" ;
@@ -149,8 +149,8 @@ public:
 		queue[queue_index] = list[incoming(tname,0)] ;
 		visit[incoming(tname,0)] = 1 ;
 		while(counter < n){
-			node* temp = queue[counter++] ;
-			cout<<temp->city ;
+			node* temp = list[incoming(queue[counter]->city,0)] ;
+			cout<<"\t"<<temp->city ;
 			while(temp->link != NULL){
 				temp = temp->link ;
 				if(visit[incoming(temp->city , 0)] != 1 ){
@@ -158,33 +158,10 @@ public:
 					visit[incoming(temp->city , 0)] = 1 ;
 					}
 				}
+			counter++ ;
 			}
-				
-	/*
-		int visit[n] , next[n] ;
-		for(int i =0 ;i<n ; i++)
-			visit[i] = next[i] = 0 ;
-		string tname ;
-		cout<<"\nEnter city name to start traversal from :" ;
-		cin>>tname ;
-		cout<<"\nTraversal result is :" ;
-		cout<<"\n"<<tname ;
-		visit[incoming(tname,0)]++ ;
-		int counter = 0 ;
-		node *q = list[incoming(tname,0)] ;
-
-		for( int i = incoming(tname,0) ;i<n ; i++){
-			while(q != NULL){
-				int j = incoming(q->city,0) ;
-				visit[j]++ ;
-				if(visit[j] == 1)
-					cout<<"\n"<<q->city ;
-				q = q->link ;
-			}
-		}
-		*/
 	}
-	
+
 	void delete_vertice(){
 		string tname ;
 		cout<<"\nEnter city to be deleted : " ;
@@ -195,7 +172,7 @@ public:
 			list[i] = list[i+1] ;
 			}
 	}
-	
+
 	void delete_link(){
 		string tname , uname ;
 		cout<<"\nEnter name of starting city : " ;
@@ -213,7 +190,7 @@ public:
 				r->link = temp->link ;
 				temp->link = NULL ;
 				}
-			}	
+			}
 	}
 };
 
