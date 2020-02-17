@@ -13,7 +13,9 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    void mousePressEvent(QMouseEvent *ev) ;
     void dda(int x1, int y1, int x2, int y2) ;
+    void Draw() ;
     ~MainWindow();
 
 private slots:
@@ -25,8 +27,15 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_pushButton_2_clicked();
+
+    void on_pushButton_3_clicked();
+
 private:
     Ui::MainWindow *ui;
+    int a[20],bb[20];
+    int x1,y1,x2,y2,vertices;
+    bool start;
 };
 
 #endif // MAINWINDOW_H
