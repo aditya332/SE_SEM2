@@ -21,28 +21,29 @@ public :
 		this->left = NULL ;
 		this->right = NULL ;
 	}
-	
+
 	void read(){
 		cout<<"\nEnter the Key : " ;
 		cin>>key ;
 		cout<<"\nEnter probability of searching this key : " ;
 		cin>>p ;
 	}
-	
+
 	void read_q(){
 		cout<<"\nEnter probability of failure : " ;
 		cin>>q ;
 	}
-	
+
 	void disp(){
 		cout<<"\nKey : "<<key<<" with probability of "<<p<<" ." ;
 	}
-	
+
 	friend class cost_class ;
 };
 
 class cost_class{
 	node *list[10] ;
+	node *roott ;
 	int n ;
 	double weight[10][10] , cost[10][10] ;
 	int root[10][10] ;
@@ -54,8 +55,9 @@ public:
 			cost[i][i] = 0 ;
 			root[i][i] = 0 ;
 		}
+		roott = new node ;
 	}
-	
+
 	void input(){
 		cout<<"\nEnter total no. of nodes : " ;
 		cin>>n ;
@@ -66,7 +68,7 @@ public:
 		}
 		list[--i]->read_q() ;
 	}
-	
+
 	void calculate(){
 		for(int i = 0 ; i<n ; i++){
 			weight[i][i] = list[i]->q ;
@@ -97,22 +99,53 @@ public:
 				//cout<<i<<"\t"<<j<<"\t"<<cost[i][j]<<"\n" ;
 			}
 		}
-		obst(i,j,k)
-		//cout<<"\n"<<root[0][3]<<"\t"<<cost[0][3] ; 
+		obst(list[k] ,i,j,k,1) ;
+		//cout<<"\n"<<root[0][3]<<"\t"<<cost[0][3] ;
 	}
-	
-	void obst(int i , int j , int k){
-		node *roott ;
-		roott = list[k] ;
-		if(root[i][k-1] == 0)
-			roott->left = NULL ;
-		else
-			roott->left = list[root[i][k-1]] ;
-		if(root[k,j] == 0)
-			roott->right = NULL ;
-		else
-			roott->right = list[root[k,j]] ;
-		
+
+	void obst(node *start , int i , int j , int k , int x){
+		//if(start->left != NULL || start->right != NULL || x == 1){
+		if(start != NULL || x == 1){
+			if(x == 1)
+				roott = start ;
+			if(root[i][k-1] == 0)
+				start->left = NULL ;
+			else
+				start->left = list[root[i][k-1]] ;
+			if(root[k][j] == 0)
+				start->right = NULL ;
+			else
+				start->right = list[root[k][j]] ;
+			obst(start->left,i,k-1,root[i][k-1],0) ;
+			obst(start->right,k,j,root[k][j],0) ;
+		}
+	}
+		/*	else if(start != NULL){
+				node *temp ;
+				temp = start ;
+				if(root[i][k-1] == 0)
+					temp->left = NULL ;
+				else
+					temp->left = list[root[i][k-1]] ;
+				if(root[k][j] == 0)
+					temp->right = NULL ;
+				else
+					temp->right = list[root[k][j]] ;
+				obst(temp->left,i,k-1,root[i][k-1],0) ;
+				obst(temp->right,k,j,root[k][j],0) ;
+			}
+		}*/
+
+	void recinorder(node *root1){
+		if(root1 != NULL){
+			recinorder(root1->left);
+			cout<<root1->key<<"\t";
+			recinorder(root1->right);
+		}
+	}
+
+	void call_inorder(){
+		recinorder(roott) ;
 	}
 };
 
@@ -120,5 +153,6 @@ int main() {
 	cost_class c ;
 	c.input() ;
 	c.calculate() ;
+	c.call_inorder() ;
 	return 0;
 }
