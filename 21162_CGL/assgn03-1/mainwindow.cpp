@@ -8,7 +8,8 @@ QImage image(400, 400, QImage::Format_RGB888) ;
 QRgb color = qRgb(255,255,255) ;
 int initialx, initialy;
 int restart = 0;
-int stx,sty,angle ;
+int stx = 0,sty = 0,angle = 0 ;
+int scale[3][3] ;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -16,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     vertices = 0 ;
     start = true ;
+    for(int i = 0 ; i<20 ; i++)
+        cordi[i][2] = 1 ;
     ui->setupUi(this);
     ui->label->setPixmap(QPixmap::fromImage(image));
     dda(200,0,200,400) ;
@@ -49,8 +52,8 @@ void MainWindow::mousePressEvent(QMouseEvent *ev)
           int q = ev->pos().y();
           p -= 50 ;
           q -= 50 ;
-          a[vertices]=p;
-          bb[vertices]=q;
+          cordi[vertices][0]=p;
+          cordi[vertices][1]=q;
           if(restart == 0){
               restart = 1;
               initialx = p;
@@ -59,12 +62,12 @@ void MainWindow::mousePressEvent(QMouseEvent *ev)
         }
 
       if(ev->button()==Qt::RightButton){
-          dda(a[vertices-1],bb[vertices-1],a[0],bb[0]);
+          dda(cordi[vertices-1][0],cordi[vertices-1][1],cordi[0][0],cordi[0][1]);
            start=false;
       }
       else{
           if(vertices>0)
-              dda(a[vertices],bb[vertices],a[vertices-1],bb[vertices-1]);
+              dda(cordi[vertices][0],cordi[vertices][1],cordi[vertices-1][0],cordi[vertices-1][1]);
       }
      vertices++;
     }
@@ -134,4 +137,52 @@ void MainWindow::on_textEdit_3_textChanged()
 {
     QString str = ui->textEdit_3->toPlainText() ;
     angle = str.toInt() ;
+}
+
+void MainWindow::mult(int st[][3]){
+    int temp[vertices-1][3] ;
+    for (int i = 0; i < vertices-1; i++)
+            for (int j = 0; j < 3; j++)
+                for (int k = 0; k < 3; k++)
+                    temp[i][j] += (st[i][k] * cordi[k][j]);
+
+    for(int i = 0; i<vertices-1; i++){
+        cordi[i][0] = temp[i][0] ;
+        cordi[i][1] = temp[i][1] ;
+    }
+}
+
+void MainWindow::Draw(){
+    for(int i=0;i<vertices-1;i++){
+        x1=cordi[i][0];
+        y1=cordi[i][1];
+        x2=cordi[i+1][0];
+        y2=cordi[i+1][1];
+        dda(x1,y1,x2,y2);
+    }
+    dda(initialx, initialy ,cordi[vertices-1][0],cordi[vertices-1][1]);
+    ui->label->setPixmap(QPixmap::fromImage(image));
+    ui->label->show();
+}
+
+void MainWindow::scaling(){
+    for(int i=0 ; i<3 ; i++){
+        for(int j=0 ; j<3 ; j++){
+            scale[i][j] = 0 ;
+        }
+    }
+
+    //on_textEdit_textChanged();
+    //on_textEdit_2_textChanged();
+    scale[0][0] = stx ;
+    scale[1][1] = sty ;
+    scale[2][2] = 1 ;
+
+    mult(scale) ;
+    Draw() ;
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    scaling();
 }
