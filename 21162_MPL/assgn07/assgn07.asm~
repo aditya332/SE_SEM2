@@ -150,7 +150,7 @@ _BubbleSort:
 		inc rax;		//j+1 in RAX
 		
 		mov bl,byte[array+rdi];		//array[j]
-		mov dl,byte[array,rax];		//array[j+1]
+		mov dl,byte[array+rax];		//array[j+1]
 		
 		cmp bl,dl;
 		jbe updateInnerLoop
