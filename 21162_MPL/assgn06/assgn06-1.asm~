@@ -15,11 +15,9 @@
 %endmacro
 
 section .data
-	dash: db "-------------------------------------------",10;
-	lenDash: equ $-dash;
 
-	rmMsg: db "Processor is in Real Mode!";
-	lenRmMsg: equ $-rmMsg;
+	RealMsg: db "Processor is in Real Mode!";
+	lenRealMsg: equ $-RealMsg;
 
 	peMsg: db "Processor is in Protected Mode!";
 	lenPeMsg: equ $-peMsg;
@@ -68,7 +66,7 @@ section .text
 
 		real_mode:
 		print newLine,1;
-		print rmMsg,lenRmMsg;
+		print RealMsg,lenRealMsg;
 		print newLine,1;
 
 		protected_mode:

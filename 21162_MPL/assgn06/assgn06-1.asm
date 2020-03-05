@@ -15,14 +15,12 @@
 %endmacro
 
 section .data
-	dash: db "-------------------------------------------",10;
-	lenDash: equ $-dash;
 
-	rmMsg: db "Processor is in Real Mode!";
-	lenRmMsg: equ $-rmMsg;
+	RealMsg: db "Processor is in Real Mode!";
+	lenRealMsg: equ $-RealMsg;
 
-	peMsg: db "Processor is in Protected Mode!";
-	lenPeMsg: equ $-peMsg;
+	protMsg: db "Processor is in Protected Mode!";
+	lenprotMsg: equ $-protMsg;
 
 	mswMsg: db "Contents of MSW: ";
 	lenMswMsg: equ $-mswMsg;
@@ -68,12 +66,12 @@ section .text
 
 		real_mode:
 		print newLine,1;
-		print rmMsg,lenRmMsg;
+		print RealMsg,lenRealMsg;
 		print newLine,1;
 
 		protected_mode:
 		print newLine,1;
-		print peMsg,lenPeMsg;
+		print protMsg,lenprotMsg;
 		print newLine,1;
 
 		store_descriptor_contents:
