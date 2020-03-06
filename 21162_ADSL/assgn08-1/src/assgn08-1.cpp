@@ -22,6 +22,11 @@ public :
 		this->right = NULL ;
 	}
 
+	node(string d){
+		key = d ;
+		left = right = NULL ;
+	}
+
 	void read(){
 		cout<<"\nEnter the Key : " ;
 		cin>>key ;
@@ -99,15 +104,27 @@ public:
 				//cout<<i<<"\t"<<j<<"\t"<<cost[i][j]<<"\n" ;
 			}
 		}
-		obst(list[k] ,i,j,k,1) ;
+		roott = obst(0,n) ;
 		//cout<<"\n"<<root[0][3]<<"\t"<<cost[0][3] ;
 	}
 
-	void obst(node *start , int i , int j , int k , int x){
-		//if(start->left != NULL || start->right != NULL || x == 1){
+	node *obst( int i , int j ){
+		if(i!=j){
+			int k;
+			k=root[i][j];
+			node *p;
+			p=new node(list[k]->key);
+			p->left=obst(i,k-1);
+			p->right=obst(k,j);
+			return p;
+		}
+		return NULL ;
+	}
+		/*if(start->left != NULL || start->right != NULL || x == 1){
 		if(start != NULL || x == 1){
 			if(x == 1)
 				roott = start ;
+			cout<<"\n"<<root[i][k-1] ;
 			if(root[i][k-1] == 0)
 				start->left = NULL ;
 			else

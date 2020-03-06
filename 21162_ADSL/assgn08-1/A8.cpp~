@@ -1,0 +1,127 @@
+/*
+ * A8.cpp
+ *
+ *  Created on: Mar 2, 2020
+ *      Author: se
+ */
+#include<iostream>
+using namespace std;
+class Node{
+	int data;
+	Node *left;
+	Node *right;
+public:
+	Node(int d){
+		data=d;
+		left=right=NULL;
+	}
+	void display(){
+		cout<<"\t"<<data;
+	}
+	friend class OBST;
+};
+class OBST{
+
+	int n;
+	float c[50][50];
+	float w[50][50];
+	int r[50][50];
+	float p[50];
+	float q[50];
+	int d[50];
+public:
+	Node *root;
+	OBST(){
+		root=NULL;
+	}
+	void create(){
+		int k;
+		cout<<"Enter count of data: ";
+cin>>k;
+		n=k+1;
+		cout<<"Enter data:";
+		for(int i=1;i<n;i++){
+			cin>>d[i];
+		}
+		cout<<"Enter p for each:";
+		for(int i=1;i<n;i++){
+			cout<<"p"<<i<<":";
+			cin>>p[i];
+		}
+		cout<<"Enter q:";
+		for(int i=0;i<n;i++){
+			cout<<"q"<<i<<":";
+			cin>>q[i];
+		}
+		for(int i=0;i<n;i++){
+			w[i][i]=q[i];
+			c[i][i]=0;
+			r[i][i]=0;
+		}
+		for(int i=0;i<n;i++){
+			for(int j=0;j<n;j++){
+		if(i!=j){		w[i][j]=q[i];
+				for(int k=i+1;k<=j;k++){
+					w[i][j]=w[i][j]+q[k]+p[k];
+				}
+		}
+			}
+		}
+		for(int diff=1;diff<n;diff++){
+		for(int i=0;i<n;i++){
+			int j;
+			j=diff+i;
+			c[i][j]=w[i][j];
+				float min1;
+				min1=c[i][i]+c[i+1][j];
+
+				for(int k=i+1;k<=j;k++){
+                     if(min1>=(c[i][k-1]+c[k][j])){
+                    	 min1=c[i][k-1]+c[k][j];
+                    	 r[i][j]=k;
+                     }
+				}
+				c[i][j]=c[i][j]+min1;
+
+			}
+		}
+
+
+		for(int i=0;i<n;i++){
+			for(int j=0;j<n;j++){
+				if(i<j)
+					cout<<" C:"<<i<<j<<c[i][j]<<"\t R:"<<i<<j<<r[i][j]<<"\t W:"<<i<<j<<w[i][j]<<endl;
+			}
+		}
+		}
+	void create_tree(){
+         root=tree(0,n-1);
+	}
+	Node* tree(int i,int j){
+		if(i!=j){int k;
+		k=r[i][j];
+		Node *p;
+		p=new Node(d[k]);
+			p->left=tree(i,k-1);
+			p->right=tree(k,j);
+
+        return p;
+	}
+		return NULL;
+	}
+	void Inorder(Node *root){
+		if(root)
+		{
+		Inorder(root->left);
+		root->display();
+		Inorder(root->right);
+		}
+	}
+};
+int main(){
+	OBST a;
+	a.create();
+	a.create_tree();
+	a.Inorder(a.root);
+}
+
